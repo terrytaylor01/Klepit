@@ -15,9 +15,10 @@ export default function Sidebar() {
         <p className="mt-auto">
           <small>
             Created by Terrence Taylor, using ReactJS and TailwindCSS and
-            Supabase for SQL Database and Authentication. See the source code
-            here-
-            {">"}
+            Supabase for SQL Database and User Authentication. Deployed and hosted on Cloudflare Pages. See the source code{" "}
+            <a className="font-bold" href="https://github.com/terrytaylor01/Klepit" target="_blank">
+              here
+            </a>
           </small>
         </p>
       </div>
