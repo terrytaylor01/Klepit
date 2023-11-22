@@ -19,11 +19,15 @@ export default function CreatePostForm({ cameFromImage }) {
 
   const [isText, setIsText] = React.useState(cameFromImage ? false : true);
 
+  let post_author = session.user.user_metadata.user_name
+    ? session.user.user_metadata.user_name
+    : session.user.email;
+
   const [formData, setFormData] = React.useState({
     title: "",
     text: "",
     img: "",
-    author: session?.user.user_metadata.user_name,
+    author: post_author,
   });
 
   const [formValid, setFormValid] = React.useState(false);
