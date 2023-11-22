@@ -16,6 +16,10 @@ export default function PreviewPost({
   body_text,
 }) {
   const [isExpanded, setIsExpanded] = React.useState(false);
+  const [dynamicVotes, setDynamicVotes] = React.useState(votes);
+
+  // 0 if false, 1 if upvote, 2 if downvote
+  const [hasVoted, setHasVoted] = React.useState(0);
 
   function timeSince(dateString) {
     var date = new Date(dateString.replace(" ", "T"));
@@ -47,6 +51,10 @@ export default function PreviewPost({
 
   async function handleVote(isUpvote) {
     console.log("vote handled");
+
+    if (hasVoted == 1 && isUpvote) {
+      return;
+    }
     const count = isUpvote ? 1 : -1;
     console.log("count:", count);
     console.log("post id", post_id);
@@ -63,6 +71,7 @@ export default function PreviewPost({
     }
 
     const newVotes = currentVotes.votes + count;
+    setDynamicVotes(newVotes);
 
     const { data, error: updateError } = await supabase
       .from("posts")
@@ -72,6 +81,7 @@ export default function PreviewPost({
     if (updateError) {
       console.log("Data update error: ", updateError);
     } else {
+      setHasVoted(isUpvote ? 1 : 2);
       console.log("Vote count updated successfully");
     }
   }
@@ -85,16 +95,22 @@ export default function PreviewPost({
           onClick={() => {
             handleVote(true);
           }}
-          className="flex aspect-square w-6 items-center justify-center rounded-sm hover:bg-neutral-700"
+          className={
+            (hasVoted == "1" ? "fill-white" : "") +
+            " flex aspect-square w-6 items-center justify-center rounded-sm hover:bg-neutral-700 "
+          }
         >
           <ArrowIcon />
         </button>
-        <p>{!(votes === null) ? votes : "Null"}</p>
+        <p>{!(votes === null) ? dynamicVotes : "Null"}</p>
         <button
           onClick={() => {
             handleVote(false);
           }}
-          className="flex aspect-square w-6 items-center justify-center rounded-sm hover:bg-neutral-700 [&>*]:rotate-180"
+          className={
+            (hasVoted == "2" ? "fill-white" : "") +
+            " flex aspect-square w-6 items-center justify-center rounded-sm hover:bg-neutral-700 [&>*]:rotate-180"
+          }
         >
           <ArrowIcon />
         </button>
