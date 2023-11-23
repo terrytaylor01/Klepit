@@ -9,7 +9,8 @@ This project is a clone of the Reddit homepage, demonstrating my skills in front
 ## Key Features
 - **Post Creation**: Users can create a new post by clicking the "Create Post" button, which directs them to a new page hosting a form. This form allows users to choose between an image post or a text post, fill in the relevant data, and submit it, serving it to the site.
 - **User Authentication**: The site includes user authentication functionality. Users must sign in (via a form modal that appears when the "Sign In" button is clicked) before they can create or vote on a post.
-- **Post Filtering**: Users can filter posts by "Latest" or "Most Popular", which is dynamically passed on a SQL `.order` query using state.
+- **Post Filtering**: Users can filter posts by "Latest" or "Most Popular", which utilises a view created within the SQL database to order by vote tally.
+- **User Voting**: Users can also up-vote or down-vote, with intuitive switching and instant feedback for the user.
 
 ## Technologies Used
 - **Frontend**: The site is built with HTML, CSS and JS. React as the main framework and styled with TailwindCSS.
@@ -19,7 +20,7 @@ This project is a clone of the Reddit homepage, demonstrating my skills in front
 ## Reflection
 This project was a great opportunity for me to showcase my skills in front-end development, particularly with React and TailwindCSS. The challenge of replicating the functionality of Reddit's homepage allowed me to demonstrate my proficiency in creating intuitive and responsive user interfaces. It also demonstrates my capabilities emulating a large scale commercial product. 
 
-The implementation of user authentication and post filtering features required a deep understanding of how to integrate front-end technologies with back-end services, a skill that is crucial for any front-end developer. Working with the user session to determine what is shown / what functions are available to the user was engaging. Similarly working with React Context to handle the Sign In modal throughout the entire application was a great exercise for React's inherit functionalities.
+The implementation of user authentication and post filtering features required a deep understanding of how to integrate front-end technologies with back-end services, a skill that is crucial for any front-end developer. Specifically working with the voting functionality was a great way to show the program working with an SQL database and handling appropriate logic, like if the user had already voted. Futherm working with the user session to determine what is shown / what functions are available to the user was engaging. Similarly working with React Context to handle the Sign In modal throughout the entire application was a great exercise for React's inherit functionalities.
 
 Moreover, the use of TailwindCSS for styling allowed me to create a visually appealing design that enhances the user experience. This project reflects my commitment to creating applications that are not only functional but also aesthetically pleasing.
 
