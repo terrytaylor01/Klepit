@@ -64,7 +64,7 @@ export default function SignInModal() {
           </button>
         </span>
         <div className="flex flex-col gap-3">
-          <button
+          {/* <button
             onClick={() => handleSignIn("google")}
             className="flex h-12 items-center rounded-full bg-white p-2 text-black transition-colors hover:bg-neutral-200"
           >
@@ -72,7 +72,7 @@ export default function SignInModal() {
               <GoogleIcon />
             </div>
             <p className="grow text-center">Continue with Google</p>
-          </button>
+          </button> */}
           <button
             onClick={() => handleSignIn("github")}
             className="flex h-12 items-center rounded-full bg-white p-2 text-black transition-colors hover:bg-neutral-200"
