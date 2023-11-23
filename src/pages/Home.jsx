@@ -7,8 +7,8 @@ import ScrollToTop from "../components/ScrollToTop";
 
 export default function Home() {
   return (
-    <main className="font-inter h-fit w-screen">
-      <div className="flex p-8">
+    <main className="h-fit w-screen font-inter">
+      <div className="flex p-3 md:p-8">
         <div className="flex w-full flex-col gap-4">
           <CreateBar />
           <PostsSection />
