@@ -5,20 +5,23 @@ import { ArrowIcon } from "./ui/icons/ArrowIcon";
 import { ExpandIcon } from "./ui/icons/ExpandIcon";
 import { MinimiseIcon } from "./ui/icons/MinimiseIcon";
 import { supabase } from "../supabaseClient.js";
+import { HandleModalContext, SessionContext } from "../App.jsx";
 
 export default function PreviewPost({
   post_id,
   title,
   poster,
   created_at,
-  votes,
   img,
   body_text,
 }) {
   const [isExpanded, setIsExpanded] = React.useState(false);
-  const [dynamicVotes, setDynamicVotes] = React.useState(votes);
 
-  // 0 if false, 1 if upvote, 2 if downvote
+  const [voteCount, setVoteCount] = React.useState(0);
+
+  const session = React.useContext(SessionContext);
+  const handleSignInModal = React.useContext(HandleModalContext);
+
   const [hasVoted, setHasVoted] = React.useState(0);
 
   function timeSince(dateString) {
@@ -28,63 +31,141 @@ export default function PreviewPost({
     var interval = seconds / 31536000;
 
     if (interval > 1) {
-      return Math.floor(interval) + " years ago";
+      const msg = Math.floor(interval) == 1 ? " year ago" : "years ago";
+      return Math.floor(interval) + msg;
     }
     interval = seconds / 2592000;
     if (interval > 1) {
-      return Math.floor(interval) + " months ago";
+      const msg = Math.floor(interval) == 1 ? " month ago" : "months ago";
+      return Math.floor(interval) + msg;
     }
     interval = seconds / 86400;
     if (interval > 1) {
-      return Math.floor(interval) + " days ago";
+      const msg = Math.floor(interval) == 1 ? " day ago" : "days ago";
+      return Math.floor(interval) + msg;
     }
     interval = seconds / 3600;
     if (interval > 1) {
-      return Math.floor(interval) + " hours ago";
+      const msg = Math.floor(interval) == 1 ? " hour ago" : "hours ago";
+      return Math.floor(interval) + msg;
     }
     interval = seconds / 60;
     if (interval > 1) {
-      return Math.floor(interval) + " minutes ago";
+      const msg = Math.floor(interval) == 1 ? " minute ago" : "minutes ago";
+      return Math.floor(interval) + msg;
     }
     return "less than 1 minute ago";
   }
 
   async function handleVote(isUpvote) {
-    console.log("vote handled");
-
-    if (hasVoted == 1 && isUpvote) {
-      return;
-    }
-    const count = isUpvote ? 1 : -1;
-    console.log("count:", count);
-    console.log("post id", post_id);
-
-    let { data: currentVotes, error } = await supabase
-      .from("posts")
-      .select("votes")
-      .eq("id", post_id)
-      .single();
-
-    if (error) {
-      console.log("Data fetch error: ", error);
+    if (!session) {
+      handleSignInModal("open");
       return;
     }
 
-    const newVotes = currentVotes.votes + count;
-    setDynamicVotes(newVotes);
+    const { data, error } = await supabase
+      .from("votes")
+      .select("user_id, post_id, vote_type")
+      .eq("user_id", session.user.id)
+      .eq("post_id", post_id);
 
-    const { data, error: updateError } = await supabase
-      .from("posts")
-      .update({ votes: newVotes })
-      .eq("id", post_id);
-
-    if (updateError) {
-      console.log("Data update error: ", updateError);
+    // a vote exists already
+    if (data && data.length > 0) {
+      // they upvoted
+      if (isUpvote) {
+        // they have already upvoted so delete upvote vote
+        if (data[0]?.vote_type == "upvote") {
+          const { data, error } = await supabase
+            .from("votes")
+            .delete()
+            .eq("user_id", session.user.id)
+            .eq("post_id", post_id);
+        }
+        // if they have downvoted change the vote to upvote
+        else {
+          const { data, error } = await supabase
+            .from("votes")
+            .update({ vote_type: "upvote" })
+            .eq("user_id", session.user.id)
+            .eq("post_id", post_id)
+            .select();
+        }
+      }
+      // they downvoted
+      else {
+        if (data[0]?.vote_type == "downvote") {
+          const { data, error } = await supabase
+            .from("votes")
+            .delete()
+            .eq("user_id", session.user.id)
+            .eq("post_id", post_id);
+        } else {
+          const { data, error } = await supabase
+            .from("votes")
+            .update({ vote_type: "downvote" })
+            .eq("user_id", session.user.id)
+            .eq("post_id", post_id)
+            .select();
+        }
+      }
     } else {
-      setHasVoted(isUpvote ? 1 : 2);
-      console.log("Vote count updated successfully");
+      const { data, error } = await supabase
+        .from("votes")
+        .insert([
+          {
+            post_id: post_id,
+            vote_type: isUpvote ? "upvote" : "downvote",
+            user_id: session.user.id,
+          },
+        ])
+        .select();
     }
+    await fetchVotes();
   }
+
+  // Fetch votes for tally
+  const fetchVotes = async () => {
+    const { data: upvoteData, error: upvoteError } = await supabase
+      .from("votes")
+      .select("*", { count: "exact" })
+      .eq("vote_type", "upvote")
+      .eq("post_id", post_id);
+
+    const { data: downvoteData, error: downvoteError } = await supabase
+      .from("votes")
+      .select("*", { count: "exact" })
+      .eq("vote_type", "downvote")
+      .eq("post_id", post_id);
+
+    let tally = upvoteData?.length - downvoteData?.length;
+    setVoteCount(tally);
+  };
+
+  const checkUserVoteStatus = async () => {
+    const { data, error } = await supabase
+      .from("votes")
+      .select("user_id, post_id, vote_type")
+      .eq("user_id", session.user.id)
+      .eq("post_id", post_id);
+
+    if (data && data.length > 0) {
+      if (data[0]?.vote_type == "upvote") {
+        setHasVoted("upvoted");
+      } else {
+        setHasVoted("downvoted");
+      }
+    } else {
+      setHasVoted(0);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchVotes();
+  }, []);
+
+  React.useEffect(() => {
+    checkUserVoteStatus();
+  }, [voteCount, session]);
 
   let howLong = timeSince(created_at);
 
@@ -96,19 +177,19 @@ export default function PreviewPost({
             handleVote(true);
           }}
           className={
-            (hasVoted == "1" ? "fill-white" : "") +
+            (hasVoted == "upvoted" ? "fill-white" : "") +
             " flex aspect-square w-6 items-center justify-center rounded-sm hover:bg-neutral-700 "
           }
         >
           <ArrowIcon />
         </button>
-        <p>{!(votes === null) ? dynamicVotes : "Null"}</p>
+        <p>{voteCount}</p>
         <button
           onClick={() => {
             handleVote(false);
           }}
           className={
-            (hasVoted == "2" ? "fill-white" : "") +
+            (hasVoted == "downvoted" ? "fill-white" : "") +
             " flex aspect-square w-6 items-center justify-center rounded-sm hover:bg-neutral-700 [&>*]:rotate-180"
           }
         >
@@ -146,13 +227,6 @@ export default function PreviewPost({
               >
                 {isExpanded ? <MinimiseIcon /> : <ExpandIcon />}
               </button>
-
-              {/*  <button className="flex h-fit items-center gap-1 rounded-md px-2 py-1 hover:bg-neutral-700">
-                <CommentIcon />
-                <div className="flex gap-1">
-                  {comments} <p className="hidden md:block">comments</p>
-                </div>
-              </button> */}
             </div>
           </div>
         </div>

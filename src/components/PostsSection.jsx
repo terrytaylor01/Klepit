@@ -86,14 +86,26 @@ export default function PostsSection() {
   React.useEffect(() => {
     const fetchData = async () => {
       let orderParam = filter === "latest" ? "created_at" : "votes";
-      let { data: posts, error } = await supabase
-        .from("posts")
-        .select("*")
-        .order(orderParam, { ascending: false });
+      if (orderParam == "created_at") {
+        let { data: posts, error } = await supabase
+          .from("posts")
+          .select("*")
+          .order(orderParam, { ascending: false });
 
-      if (error) console.log("Data fetch error: ", error);
-      else {
-        setPostData(posts);
+        if (error) console.log("Data fetch error: ", error);
+        else {
+          setPostData(posts);
+        }
+      } else {
+        const { data: posts, error } = await supabase
+          .from("posts_with_vote_tally")
+          .select("*")
+          .order("vote_tally", { ascending: false });
+
+        if (error) console.log("Data fetch error: ", error);
+        else {
+          setPostData(posts);
+        }
       }
     };
 
