@@ -176,7 +176,7 @@ export default function PreviewPost({
 
   return (
     <article
-      onClick={handleExpand}
+      
       className="flex h-fit min-h-[7rem] border-[1px] border-neutral-700   bg-neutral-800   hover:border-neutral-400  md:min-h-[6rem] "
     >
       <div className="flex w-10 flex-col items-center bg-neutral-900 p-3  text-white">
@@ -204,7 +204,7 @@ export default function PreviewPost({
           <ArrowIcon />
         </button>
       </div>
-      <div className="flex w-full flex-col">
+      <div  onClick={handleExpand} className="flex w-full flex-col">
         <div className="flex w-[100%] px-4 py-2">
           {img == "" || img == null ? (
             <div className="flex aspect-[10/8] h-[80px] w-[100px] items-center justify-center rounded-md bg-neutral-700 text-white ">
