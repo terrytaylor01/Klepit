@@ -159,6 +159,11 @@ export default function PreviewPost({
     }
   };
 
+  function handleExpand(e) {
+    e.stopPropagation();
+    setIsExpanded((prev) => !prev);
+  }
+
   React.useEffect(() => {
     fetchVotes();
   }, []);
@@ -171,7 +176,7 @@ export default function PreviewPost({
 
   return (
     <article
-      onClick={() => setIsExpanded((prev) => !prev)}
+      onClick={handleExpand}
       className="flex h-fit min-h-[7rem] border-[1px] border-neutral-700   bg-neutral-800   hover:border-neutral-400  md:min-h-[6rem] "
     >
       <div className="flex w-10 flex-col items-center bg-neutral-900 p-3  text-white">
@@ -225,7 +230,7 @@ export default function PreviewPost({
             </div>
             <div className="mt-auto flex h-full items-center text-neutral-400">
               <button
-                onClick={() => setIsExpanded((prev) => !prev)}
+                onClick={handleExpand}
                 className="flex h-5 items-center gap-1 rounded-md  hover:bg-neutral-700"
               >
                 {isExpanded ? <MinimiseIcon /> : <ExpandIcon />}
