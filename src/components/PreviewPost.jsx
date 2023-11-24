@@ -31,27 +31,27 @@ export default function PreviewPost({
     var interval = seconds / 31536000;
 
     if (interval > 1) {
-      const msg = Math.floor(interval) == 1 ? " year ago" : "years ago";
+      const msg = Math.floor(interval) == 1 ? " year ago" : " years ago";
       return Math.floor(interval) + msg;
     }
     interval = seconds / 2592000;
     if (interval > 1) {
-      const msg = Math.floor(interval) == 1 ? " month ago" : "months ago";
+      const msg = Math.floor(interval) == 1 ? " month ago" : " months ago";
       return Math.floor(interval) + msg;
     }
     interval = seconds / 86400;
     if (interval > 1) {
-      const msg = Math.floor(interval) == 1 ? " day ago" : "days ago";
+      const msg = Math.floor(interval) == 1 ? " day ago" : " days ago";
       return Math.floor(interval) + msg;
     }
     interval = seconds / 3600;
     if (interval > 1) {
-      const msg = Math.floor(interval) == 1 ? " hour ago" : "hours ago";
+      const msg = Math.floor(interval) == 1 ? " hour ago" : " hours ago";
       return Math.floor(interval) + msg;
     }
     interval = seconds / 60;
     if (interval > 1) {
-      const msg = Math.floor(interval) == 1 ? " minute ago" : "minutes ago";
+      const msg = Math.floor(interval) == 1 ? " minute ago" : " minutes ago";
       return Math.floor(interval) + msg;
     }
     return "less than 1 minute ago";
