@@ -1,4 +1,5 @@
 import React from "react";
+import { ScrollTopIcon } from "./ui/icons/ScrollTopIcon";
 
 export default function ScrollToTop() {
   const scroll = () => {
@@ -8,9 +9,9 @@ export default function ScrollToTop() {
   return (
     <button
       onClick={scroll}
-      className="flex aspect-square w-10 items-center justify-center rounded-full bg-neutral-800 text-2xl text-white hover:bg-neutral-600 transition-colors "
+      className="flex aspect-square w-10 items-center justify-center rounded-full bg-neutral-800 p-2 text-2xl text-neutral-200  transition-colors hover:bg-neutral-600 "
     >
-      ^
+      <ScrollTopIcon />
     </button>
   );
 }
