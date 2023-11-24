@@ -170,7 +170,10 @@ export default function PreviewPost({
   let howLong = timeSince(created_at);
 
   return (
-    <article className="flex h-fit min-h-[7rem] border-[1px] border-neutral-700   bg-neutral-800   hover:border-neutral-400  md:min-h-[6rem] ">
+    <article
+      onClick={() => setIsExpanded((prev) => !prev)}
+      className="flex h-fit min-h-[7rem] border-[1px] border-neutral-700   bg-neutral-800   hover:border-neutral-400  md:min-h-[6rem] "
+    >
       <div className="flex w-10 flex-col items-center bg-neutral-900 p-3  text-white">
         <button
           onClick={() => {
