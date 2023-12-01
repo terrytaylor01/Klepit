@@ -1,6 +1,14 @@
 import React from "react";
 
-export default function PostFilterBar({ filter, setFilter }) {
+type FilterProps = {
+  filter: string;
+  setFilter: (string: string) => void;
+};
+
+export default function PostFilterBar({
+  filter,
+  setFilter,
+}: FilterProps): React.JSX.Element {
   return (
     <div className="flex h-14 items-center gap-2 rounded-md bg-neutral-800 px-4 py-2 outline outline-1 outline-neutral-600">
       <button

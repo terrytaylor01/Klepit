@@ -1,9 +1,8 @@
 import React from "react";
-import { supabase } from "../../supabaseClient.js";
+import { supabase } from "../../supabaseClient";
 import { CrossIcon } from "../ui/icons/CrossIcon";
-import { GoogleIcon } from "../ui/icons/GoogleIcon";
 import { GithubIcon } from "../ui/icons/GithubIcon";
-import { HandleModalContext } from "../../App.jsx";
+import { HandleModalContext } from "../../App";
 import { useNavigate } from "react-router-dom";
 
 export default function SignInModal() {
@@ -18,16 +17,16 @@ export default function SignInModal() {
     password: "",
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
     setFormData((prev) => {
-      return { ...prev, [e.target.name]: e.target.value };
+      return { ...prev, [e.currentTarget.name]: e.currentTarget.value };
     });
     console.log(formData);
   };
 
-  const handleSignIn = async (provider) => {
+  const handleSignIn = async (provider: string) => {
     const { error } = await supabase.auth.signInWithOAuth({
-      provider: provider,
+      provider: provider as "github",
     });
     if (error) console.error(error);
   };

@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
+import { Session } from "@supabase/supabase-js";
 
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
@@ -8,12 +9,12 @@ import SignInModal from "./components/modals/SignInModal";
 
 import { supabase } from "./supabaseClient.js";
 
-export const SessionContext = React.createContext();
-export const HandleModalContext = React.createContext();
+export const SessionContext = React.createContext<Session | null>(null);
+export const HandleModalContext = React.createContext((command: string) => {});
 
 function App() {
   const [signInOpen, setSignInOpen] = React.useState(false);
-  const [session, setSession] = React.useState(null);
+  const [session, setSession] = React.useState<Session | null>(null);
 
   React.useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -29,7 +30,7 @@ function App() {
     return () => subscription.unsubscribe();
   }, []);
 
-  const handleSignInModal = (command) => {
+  const handleSignInModal = (command: string) => {
     if (command == "open") {
       setSignInOpen(true);
       document.body.classList.add("overflow-hidden");

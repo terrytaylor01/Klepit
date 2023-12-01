@@ -1,8 +1,8 @@
 import React from "react";
 import { supabase } from "../supabaseClient.js";
-import { MainIcon } from "./ui/icons/MainIcon";
+import { MainIcon } from "./ui/icons/MainIcon.jsx";
 import { Link } from "react-router-dom";
-import { HandleModalContext, SessionContext } from "../App";
+import { HandleModalContext, SessionContext } from "../App.jsx";
 
 export default function Navbar() {
   const session = React.useContext(SessionContext);
@@ -11,7 +11,6 @@ export default function Navbar() {
   async function signOut() {
     const { error } = await supabase.auth.signOut();
   }
- 
 
   return (
     <div className="sticky top-0 flex h-14 items-center justify-between border border-x-0 border-t-0 border-neutral-600 bg-neutral-800 px-6 py-1 font-inter">
@@ -35,9 +34,12 @@ export default function Navbar() {
           Sign In
         </button>
       ) : (
-        <div className="flex text-white items-center gap-4">
-         
-          <h2 className="text-sm">{session.user.user_metadata.user_name ? session.user.user_metadata.user_name : session.user.email}</h2>
+        <div className="flex items-center gap-4 text-white">
+          <h2 className="text-sm">
+            {session.user.user_metadata.user_name
+              ? session.user.user_metadata.user_name
+              : session.user.email}
+          </h2>
           <button
             onClick={signOut}
             className="rounded-full bg-orange-500 px-2 py-1 font-medium text-white transition-colors hover:bg-orange-600"
