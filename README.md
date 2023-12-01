@@ -1,7 +1,7 @@
 # Klepit: A Reddit-Clone Portfolio Project
 
 ## Project Overview
-This project is a clone of the Reddit homepage, demonstrating my skills in front-end web development. The application is built with React and TailwindCSS, and initialized using Vite. It features a list of posts in rows, with the ability to expand text posts to see the body text, and image posts to preview the image. 
+This project is a clone of the Reddit homepage, demonstrating my skills in front-end web development. The application is built with primarily React, TypeScript and TailwindCSS, and initialized using Vite. It features a list of posts in rows, with the ability to expand text posts to see the body text, and image posts to preview the image. 
 
 ## Deployment
 [Find the live deployment here](https://klepit.pages.dev/)
@@ -13,12 +13,12 @@ This project is a clone of the Reddit homepage, demonstrating my skills in front
 - **User Voting**: Users can also up-vote or down-vote, with intuitive switching and instant feedback for the user.
 
 ## Technologies Used
-- **Frontend**: The site is built with HTML, CSS and JS. React as the main framework and styled with TailwindCSS.
+- **Frontend**: The site is built with HTML, CSS and TypeScript. React as the main framework and styled with TailwindCSS.
 - **Backend**: The posts are stored and retrieved using queries to Supabase's SQL database. User authentication is also implemented using Supabase.
 - **Deployment/Hosting**: The site is deployed and hosted using Cloudflare Pages.
 
 ## Reflection
-This project was a great opportunity for me to showcase my skills in front-end development, particularly with React and TailwindCSS. The challenge of replicating the functionality of Reddit's homepage allowed me to demonstrate my proficiency in creating intuitive and responsive user interfaces. It also demonstrates my capabilities emulating a large scale commercial product. 
+This project was a great opportunity for me to showcase my skills in front-end development, particularly with TypeScript.The use of TypeScript in this project underscores my ability to write robust and type-safe code, a skill highly valued in complex and large-scale applications. The challenge of replicating the functionality of Reddit's homepage allowed me to demonstrate my proficiency in creating intuitive and responsive user interfaces. It also demonstrates my capabilities emulating a large scale commercial product. 
 
 The implementation of user authentication and post filtering features required a deep understanding of how to integrate front-end technologies with back-end services, a skill that is crucial for any front-end developer. Specifically working with the voting functionality was a great way to show the program working with an SQL database and handling appropriate logic, like if the user had already voted. Futherm working with the user session to determine what is shown / what functions are available to the user was engaging. Similarly working with React Context to handle the Sign In modal throughout the entire application was a great exercise for React's inherit functionalities.
 
