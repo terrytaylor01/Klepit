@@ -1,28 +1,19 @@
 import React from "react";
 import PreviewPost from "./PreviewPost";
 
-type TextPostType = {
+type PostDataType = {
   author: string;
+  created_at: string;
   body_text: string;
-  created_at: string;
-  id: number;
-  title: string;
-  votes: number;
-};
-type ImgPostType = {
-  author: string;
-  created_at: string;
   id: number;
   img_link: string;
   title: string;
   votes: number;
 };
 
-type PostDataType = TextPostType | ImgPostType;
-
 export default function PostFeed({ postData }: { postData: PostDataType[] }) {
   const posts = postData.map((post: PostDataType) => {
-    if ("body_text" in post) {
+    if (post.body_text != null && "body_text" in post) {
       return (
         <PreviewPost
           key={post.id}

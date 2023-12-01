@@ -7,7 +7,7 @@ import Home from "./pages/Home";
 import CreatePost from "./pages/CreatePost";
 import SignInModal from "./components/modals/SignInModal";
 
-import { supabase } from "./supabaseClient.js";
+import { supabase } from "./supabaseClient.ts";
 
 export const SessionContext = React.createContext<Session | null>(null);
 export const HandleModalContext = React.createContext((command: string) => {});

@@ -1,5 +1,5 @@
 import React from "react";
-import { supabase } from "../supabaseClient.js";
+import { supabase } from "../supabaseClient";
 import { MainIcon } from "./ui/icons/MainIcon.jsx";
 import { Link } from "react-router-dom";
 import { HandleModalContext, SessionContext } from "../App.jsx";

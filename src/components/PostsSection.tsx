@@ -3,24 +3,16 @@ import PostFilterBar from "./PostFilterBar.js";
 import PostFeed from "./PostFeed.js";
 import { supabase } from "../supabaseClient";
 
-type TextPostType = {
+
+type PostType = {
   author: string;
+  created_at: string;
   body_text: string;
-  created_at: string;
-  id: number;
-  title: string;
-  votes: number;
-};
-type ImgPostType = {
-  author: string;
-  created_at: string;
   id: number;
   img_link: string;
   title: string;
   votes: number;
 };
-
-type PostType = TextPostType | ImgPostType;
 
 export default function PostsSection() {
   const [filter, setFilter] = React.useState("latest");

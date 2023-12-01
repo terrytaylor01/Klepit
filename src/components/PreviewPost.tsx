@@ -69,7 +69,7 @@ export default function PreviewPost({
   }
 
   async function handleVote(isUpvote: boolean) {
-    if (!session) {
+    if (!session?.user.id) {
       handleSignInModal("open");
       return;
     }
@@ -155,6 +155,9 @@ export default function PreviewPost({
   };
 
   const checkUserVoteStatus = async () => {
+    if (!session?.user.id) {
+      return;
+    }
     const { data, error } = await supabase
       .from("votes")
       .select("user_id, post_id, vote_type")
