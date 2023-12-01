@@ -12,7 +12,7 @@ export const CommentIcon = () => {
       stroke="currentColor"
       fill="none"
       strokeLinecap="round"
-      stroke:inejoin="round"
+      strokeLinejoin="round"
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
       <path d="M8 9h8"></path>

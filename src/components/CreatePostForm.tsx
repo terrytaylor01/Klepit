@@ -1,21 +1,24 @@
 import React from "react";
 import { TextIcon } from "./ui/icons/TextIcon";
 import { PhotoIcon } from "./ui/icons/PhotoIcon";
-import { supabase } from "../supabaseClient.js";
+import { supabase } from "../supabaseClient";
 import { HandleModalContext, SessionContext } from "../App.jsx";
 import { useNavigate } from "react-router-dom";
 
-export default function CreatePostForm({ cameFromImage }) {
+export default function CreatePostForm({
+  cameFromImage,
+}: {
+  cameFromImage: boolean;
+}) {
   const session = React.useContext(SessionContext);
   const handleSignInModal = React.useContext(HandleModalContext);
 
   const navigate = useNavigate();
 
-  React.useEffect(() => {
-    if (!session) {
-      navigate("/");
-    }
-  }, []);
+  if (!session) {
+    navigate("/");
+    return;
+  }
 
   const [isText, setIsText] = React.useState(cameFromImage ? false : true);
 
@@ -35,14 +38,13 @@ export default function CreatePostForm({ cameFromImage }) {
 
   React.useEffect(() => {
     if (isText) {
-      if (!formData.title == "" && !formData.text == "") {
+      if (formData.title != "" && formData.text != "") {
         setFormValid(true);
       } else {
         setFormValid(false);
       }
-      console.log(formValid);
     } else {
-      if (!formData.title == "" && !formData.img == "") {
+      if (formData.title != "" && formData.img != "") {
         setFormValid(true);
       } else {
         setFormValid(false);
@@ -50,14 +52,15 @@ export default function CreatePostForm({ cameFromImage }) {
     }
   }, [formData]);
 
-  const handleChange = (e) => {
+  const handleChange = (
+    e: React.FormEvent<HTMLInputElement> | React.FormEvent<HTMLTextAreaElement>,
+  ) => {
     setFormData((prev) => {
-      return { ...prev, [e.target.name]: e.target.value };
+      return { ...prev, [e.currentTarget.name]: e.currentTarget.value };
     });
-    console.log(formData);
   };
 
-  function isImgUrl(url) {
+  function isImgUrl(url: string) {
     const img = new Image();
     img.src = url;
     return new Promise((resolve) => {
@@ -68,7 +71,6 @@ export default function CreatePostForm({ cameFromImage }) {
 
   const submitForm = async () => {
     setFormSubmitLoading(true);
-    console.log(formSubmitLoading);
     if (isText) {
       const { data, error } = await supabase
         .from("posts")
@@ -85,7 +87,6 @@ export default function CreatePostForm({ cameFromImage }) {
       navigate("/");
     } else {
       if (await isImgUrl(formData.img)) {
-        console.log("Success issa image");
         const { data, error } = await supabase
           .from("posts")
           .insert([
@@ -99,8 +100,6 @@ export default function CreatePostForm({ cameFromImage }) {
         setFormSubmitLoading(false);
         navigate("/");
       } else {
-        console.log(formSubmitLoading);
-        console.log(" notta image");
         setFormSubmitLoading(false);
       }
     }
@@ -151,14 +150,14 @@ export default function CreatePostForm({ cameFromImage }) {
           <textarea
             onChange={handleChange}
             className=" w-full rounded-sm bg-inherit p-2 px-4 text-sm outline outline-1 outline-neutral-600 focus:outline-neutral-200"
-            rows="7"
+            rows={7}
             placeholder="Text"
             name="text"
             value={formData.text}
           />
           <div className="flex w-full">
             <div className="ml-auto flex gap-4">
-              {formSubmitLoading && <div class="spinner-6 w-8 "></div>}
+              {formSubmitLoading && <div className="spinner-6 w-8 "></div>}
               <button
                 disabled={!formValid}
                 onClick={submitForm}
@@ -196,7 +195,7 @@ export default function CreatePostForm({ cameFromImage }) {
           )}
           <div className="flex w-full">
             <div className="ml-auto flex gap-4">
-              {formSubmitLoading && <div class="spinner-6 w-8 "></div>}
+              {formSubmitLoading && <div className="spinner-6 w-8 "></div>}
               <button
                 disabled={!formValid}
                 onClick={submitForm}
