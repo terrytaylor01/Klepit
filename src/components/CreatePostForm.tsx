@@ -56,7 +56,7 @@ export default function CreatePostForm({
     e: React.FormEvent<HTMLInputElement> | React.FormEvent<HTMLTextAreaElement>,
   ) => {
     setFormData((prev) => {
-      return { ...prev, [e.currentTarget.name]: e.currentTarget.value };
+      return { ...prev, [e.currentTarget?.name]: e.currentTarget?.value };
     });
   };
 
