@@ -18,10 +18,10 @@ export default function SignInModal() {
   });
 
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
+    const target = e.target as HTMLInputElement;
     setFormData((prev) => {
-      return { ...prev, [e.currentTarget.name]: e.currentTarget.value };
+      return { ...prev, [target?.name]: target?.value };
     });
-    console.log(formData);
   };
 
   const handleSignIn = async (provider: string) => {
