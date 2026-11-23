@@ -3,8 +3,6 @@
 ## Project Overview
 This project is a clone of the Reddit homepage, demonstrating my skills in front-end web development. The application is built with primarily React, TypeScript and TailwindCSS, and initialized using Vite. It features a list of posts in rows, with the ability to expand text posts to see the body text, and image posts to preview the image. 
 
-## Deployment
-[Find the live deployment here](https://klepit.pages.dev/)
 
 ## Key Features
 - **Post Creation**: Users can create a new post by clicking the "Create Post" button, which directs them to a new page hosting a form. This form allows users to choose between an image post or a text post, fill in the relevant data, and submit it, serving it to the site.
